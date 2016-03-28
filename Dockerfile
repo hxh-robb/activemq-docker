@@ -11,7 +11,7 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4
     && rm /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu
 
-ENV ACTIVEMQ_VERSION="5.4.3" \
+ENV ACTIVEMQ_VERSION="5.13.2" \
     ACTIVEMQ_HOME="/usr/local/activemq" \
     ACTIVEMQ_BASE="/var/lib/activemq" \
     ACTIVEMQ_OPTS_MEMORY="-Xms256M -Xmx256M"
@@ -20,11 +20,12 @@ RUN groupadd -g 1000 activemq && \
     useradd -g activemq -u 1000 -r -M activemq && \
     mkdir -p $ACTIVEMQ_HOME && \
     curl -SL http://www.apache.org/dist/activemq/KEYS -o /tmp/KEYS && \
-    curl -SL http://archive.apache.org/dist/activemq/apache-activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz -o /tmp/apache-activemq.tar.gz && \
-    curl -SL http://archive.apache.org/dist/activemq/apache-activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz.asc -o /tmp/apache-activemq.tar.gz.asc && \
+    curl -SL http://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz -o /tmp/apache-activemq.tar.gz && \
+    curl -SL http://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz.asc -o /tmp/apache-activemq.tar.gz.asc && \
     gpg --import /tmp/KEYS && \
     gpg --verify /tmp/apache-activemq.tar.gz.asc && \
     tar xzf /tmp/apache-activemq.tar.gz -C $ACTIVEMQ_HOME --strip-components=1 && \
+    chmod -R a+r /usr/local/activemq && \
     ln -s /usr/local/activemq/bin/activemq /usr/local/bin/activemq && \
     rm -rf /tmp/* && \
     mkdir -p $ACTIVEMQ_BASE/data && cp -rf $ACTIVEMQ_HOME/conf $ACTIVEMQ_BASE

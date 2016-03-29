@@ -32,7 +32,7 @@ RUN groupadd -g 1000 activemq && \
 
 COPY activemq-entrypoint.sh /
 
-EXPOSE 61616 8161
+EXPOSE 61616 5672 61613 1883 61614 8161
 
 VOLUME ["/var/lib/activemq/data"]
 
